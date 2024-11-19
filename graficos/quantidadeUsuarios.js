@@ -1,57 +1,20 @@
-import { getCSS, tickConfig, criarGrafico } from "./common.js"
+const url = 'https://raw.githubusercontent.com/guilhermeonrails/api/main/dados-globais.json'
 
-async function quantidadeUsuariosPorRede() {
-    const url = 'https://raw.githubusercontent.com/guilhermeonrails/api/main/numero-usuarios.json'
+async function visualizarInformacoesTintasGlobais() {
     const res = await fetch(url)
     const dados = await res.json()
-    const nomeDasRedes = Object.keys(dados)
-    const quantidadeDeUsuarios = Object.values(dados)
+    const pessoasUsandoTintas = (dados.total_pessoas_conectadas / 1e9)
+    const pessoasNoMundo = (dados.total_pessoas_mundo / 1e9)
+    const horas = parseInt(dados.tempo_medio)
+    const minutos = Math.round((dados.tempo_medio - horas) * 100)
+    const porcentagemUsandoTintas = ((pessoasUsandoTintas / pessoasNoMundo) * 100).toFixed(2)
 
-    const data = [
-        {
-            x: nomeDasRedes, 
-            y: quantidadeDeUsuarios, 
-            type: 'bar',
-            marker: {
-                color: getCSS('--primary-color')
-            }
-        }
-    ]
+    const paragrafo = document.createElement('p')
+    paragrafo.classList.add('graficos-container__texto-tinta') // Classe ajustada para o tema de tinta
+    paragrafo.innerHTML = `Você sabia que o mundo tem <span>${pessoasNoMundo} bilhões</span> de pessoas e que aproximadamente <span>${pessoasUsandoTintas} bilhões</span> utilizam algum tipo de produto de tinta, passando em média <span>${horas} horas</span> e <span>${minutos} minutos</span> por ano em atividades de pintura e manutenção de superfícies.<br>Isso significa que aproximadamente <span>${porcentagemUsandoTintas}%</span> da população utiliza tintas em suas residências ou locais de trabalho.`
 
-    const layout = {
-        plot_bgcolor: getCSS('--bg-color'),
-        paper_bgcolor: getCSS('--bg-color'),
-        title: {
-            text: 'Redes sociais com mais usuários no mundo',
-            x: 0,
-            font: {
-                color: getCSS('--primary-color'),
-                family: getCSS('--font'),
-                size: 30
-            }
-        },
-        xaxis: {
-            tickfont: tickConfig,
-            title: {
-                text: 'nome das redes sociais',
-                font: {
-                    color: getCSS('--secondary-color')
-                }
-            }
-        },
-        yaxis: {
-            tickfont: tickConfig,
-            title: {
-                text: 'bilhões de usuários ativos',
-                font: {
-                    color: getCSS('--secondary-color')
-                }
-            }
-        }
-
-    }
-
-    criarGrafico(data, layout)
+    const container = document.getElementById('graficos-container')
+    container.appendChild(paragrafo)
 }
 
-quantidadeUsuariosPorRede()
+visualizarInformacoesTintasGlobais()
