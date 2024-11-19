@@ -1,16 +1,16 @@
 import { getCSS, criarGrafico, incluirTexto } from "./common.js"
 
-async function redesFavoritasMundo() {
-    const url = 'https://raw.githubusercontent.com/guilhermeonrails/api/main/redes-favoritas.json'
+async function tintasFavoritasMundo() {
+    const url = 'https://raw.githubusercontent.com/guilhermeonrails/api/main/tintas-favoritas.json' // Substitua pelo caminho adequado para um JSON sobre tintas
     const res = await fetch(url)
     const dados = await res.json()
-    const redes = Object.keys(dados)
+    const tiposTintas = Object.keys(dados)
     const valores = Object.values(dados)
 
     const data = [
         {
             values: valores,
-            labels: redes,
+            labels: tiposTintas,
             type: 'pie',
             textinfo: 'label+percent'
         }
@@ -21,7 +21,7 @@ async function redesFavoritasMundo() {
         paper_bgcolor: getCSS('--bg-color'),
         height: 700,
         title: {
-            text: 'Redes sociais que os usuários mais gostam',
+            text: 'Tipos de Tintas Mais Populares',
             x: 0,
             font: {
                 color: getCSS('--primary-color'),
@@ -39,7 +39,7 @@ async function redesFavoritasMundo() {
 
     criarGrafico(data, layout)
 
-    incluirTexto(`Embora o <span>Instagram</span> ocupe a quarta posição em termos de número total de usuários entre as redes sociais, destaca-se como a <span>preferida pelos usuários</span>. Supera até mesmo o <span>Facebook</span>, a plataforma com mais usuários, sendo a terceira opção mais apreciada pelos usuários. <br>Essa preferência evidencia a forte conexão e apreço que as pessoas têm pelo Instagram em comparação com outras redes sociais`)
+    incluirTexto(`Entre as diversas opções de tintas disponíveis no mercado, a tinta <span>Acrílica</span> destaca-se como uma das <span>preferidas pelos usuários</span> para pinturas residenciais, seguida pela tinta <span>Esmalte</span>, popular em aplicações de metais e madeiras. Essas escolhas mostram as tendências de preferência por tintas que oferecem durabilidade e acabamento de alta qualidade.`)
 }
 
-redesFavoritasMundo()
+tintasFavoritasMundo()
